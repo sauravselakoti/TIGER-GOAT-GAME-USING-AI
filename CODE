@@ -1,0 +1,90 @@
+# -*- coding: utf-8 -*-
+"""
+@author: SAURAV
+"""
+import re
+class board:
+    def __init__(s):
+        s.points=Points()
+        s.tiger=1
+        s.goats=3
+        s.tiger_pos='A'
+        s.goat1_pos='I'
+        s.goat2_pos='H'
+        s.goat3_pos='J'
+def board_shape(s):
+    s.original_shape="""            
+                            A
+                           * *
+                          * * *
+                         *  *  *
+                        *   *   *
+                       *    *    *
+                      B*****C*****D
+                     *             *
+                    *               *
+                   *                 *
+                  *                   *
+                 *                     *
+                *                       *
+               *                         *
+              E*************F*************G
+                            *
+                            *
+                            *
+                            *
+                            *
+           H****************I***************J
+        
+            """
+    s.current_shape="""            
+                            T
+                           * *
+                          * * *
+                         *  *  *
+                        *   *   *
+                       *    *    *
+                      B*****C*****D
+                     *             *
+                    *               *
+                   *                 *
+                  *                   *
+                 *                     *
+                *                       *
+               *                         *
+              E*************F*************G
+                            *
+                            *
+                            *
+                            *
+                            *
+           2 ************** 1 ************** 3
+        
+            """
+    print(s.original_shape.ljust(40,' '),s.current_shape.rjust(40,' '))        
+
+def move_goat(s):
+    s.current_pos=[s.goat1_pos,s.goat2_pos,s.goat3_pos]
+    for i in range(len(s.current_pos)):
+        print("Goat ",i+1," at ",s.current_pos[i])
+    goat=input("Please enter which goat do you want to move(enter position of that goat):")
+    if goat in s.current_pos:
+        print("possible moves available:")
+        possible_moves=[ i for i in s.points[goat] if i not in s.current_pos]
+        for i in possible_moves:
+            print(i)
+        print("Enter your choice:")
+        my_move=input()
+        if my_move in possible_moves:
+            print('ok')
+            
+        
+    
+def Points():
+    return {'A':['B','C','D'],'B':['A','C','E'],'C':['A','B','D'],'D':['A','C','G'],'E':['B','F'],'F':['E','G','I'],'G':['D','F'],'H':['I'],'J':['I'],'I':['F','H','J']}
+b=board()
+for i in b.points:
+    print(i,b.points[i])
+print(b.tiger_pos,b.goat1_pos,b.goat2_pos,b.goat3_pos)
+move_goat(b)
+board_shape(b)
