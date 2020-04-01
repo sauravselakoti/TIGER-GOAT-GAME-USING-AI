@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-@author: SAURAV
+Created on Mon Mar 30 12:17:58 2020
+
+@author: ASUS
 """
 import re
 class board:
@@ -12,15 +14,15 @@ class board:
         s.goat1_pos='I'
         s.goat2_pos='H'
         s.goat3_pos='J'
-def board_shape(s):
-    s.original_shape="""            
+    #def __repr__(s):
+        s.original_shape='''            
                             A
                            * *
                           * * *
                          *  *  *
                         *   *   *
                        *    *    *
-                      B*****C*****D
+                      B *** C *** D
                      *             *
                     *               *
                    *                 *
@@ -28,23 +30,23 @@ def board_shape(s):
                  *                     *
                 *                       *
                *                         *
-              E*************F*************G
+              E *********** F *********** G
                             *
                             *
                             *
                             *
                             *
-           H****************I***************J
+           H ************** I ************** J
         
-            """
-    s.current_shape="""            
-                            T
+            '''
+        s.current_shape='''            
+                            o
                            * *
                           * * *
                          *  *  *
                         *   *   *
                        *    *    *
-                      B*****C*****D
+                      o *** o *** o
                      *             *
                     *               *
                    *                 *
@@ -52,31 +54,97 @@ def board_shape(s):
                  *                     *
                 *                       *
                *                         *
-              E*************F*************G
+              o *********** o *********** o
                             *
                             *
                             *
                             *
                             *
-           2 ************** 1 ************** 3
+           o ************** o ************** o
         
-            """
-    print(s.original_shape.ljust(40,' '),s.current_shape.rjust(40,' '))        
+            '''
+            
+        s.go_back='''            
+                            o
+                           * *
+                          * * *
+                         *  *  *
+                        *   *   *
+                       *    *    *
+                      o *** o *** o
+                     *             *
+                    *               *
+                   *                 *
+                  *                   *
+                 *                     *
+                *                       *
+               *                         *
+              o *********** o *********** o
+                            *
+                            *
+                            *
+                            *
+                            *
+           o ************** o ************** o
+        
+            '''
+       
+#print(s.original_shape.ljust(40,' '),s.current_shape.rjust(40,' '))
+def changes(s):
+    #list1=[s.original_shape.split()]
+    #print(list1)
+    #print(len(s.current_pos,s.original_pos))
+    print("in shape:",s.current_pos)
+    for i in range(len(s.original_shape)):
+        if s.original_shape[i] in s.current_pos:
+            print('here')
+            print(s.current_shape[i],s.original_shape[i])
+            s.current_shape =s.current_shape[:i]+s.original_shape[i]+s.current_shape[i+1:]
+    print(s.current_shape)
+    s.current_shape=s.go_back
+    
+        
 
 def move_goat(s):
-    s.current_pos=[s.goat1_pos,s.goat2_pos,s.goat3_pos]
-    for i in range(len(s.current_pos)):
-        print("Goat ",i+1," at ",s.current_pos[i])
+    s.current_pos=[s.tiger_pos,s.goat1_pos,s.goat2_pos,s.goat3_pos]
+    #board_shape(s)
+    print("Tiger is at ",s.current_pos[0])
+    for i in range(len(s.current_pos)-1):
+        print("*****Goat ",i+1," at ",s.current_pos[i+1]," *******")
     goat=input("Please enter which goat do you want to move(enter position of that goat):")
-    if goat in s.current_pos:
+    if goat in s.current_pos and goat!=s.tiger_pos:
         print("possible moves available:")
         possible_moves=[ i for i in s.points[goat] if i not in s.current_pos]
-        for i in possible_moves:
-            print(i)
-        print("Enter your choice:")
-        my_move=input()
-        if my_move in possible_moves:
-            print('ok')
+        if not possible_moves:
+            print("No options available for this goat:\n Select other goat")
+            #sleep(5)
+            move_goat(s)
+        else: 
+            for i in possible_moves:
+                print(i)
+        print("Enter your choice(position at which you want to move):")
+        i=3
+        while(i!=0):
+            my_move=input()
+            if my_move in possible_moves and my_move not in s.current_pos:
+                i=0
+                loc=s.current_pos.index(goat)+1
+                if (loc==2):
+                    s.goat1_pos=my_move
+                    s.current_pos[1]=my_move
+                elif(loc==2):
+                    s.goat2_pos=my_move
+                    s.current_pos[2]=my_move
+                elif(loc==3):
+                    s.goat3_pos=my_move
+                    s.current_pos[3]=my_move
+                print(s.current_pos)
+            else:
+                print("Your input is incorrect....re enter your choice...")
+                i-=1
+                
+    else:
+        move_goat(s)
             
         
     
@@ -86,5 +154,7 @@ b=board()
 for i in b.points:
     print(i,b.points[i])
 print(b.tiger_pos,b.goat1_pos,b.goat2_pos,b.goat3_pos)
-move_goat(b)
-board_shape(b)
+i=0
+while(i<=3):
+    move_goat(b)
+    changes(b)
