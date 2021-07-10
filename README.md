@@ -1,2 +1,3 @@
 # TIGER-GOAT-GAME-USING-AI
-this game is popular 2 player strategy game in Northern part of India ( Uttarakhand ). In this game user will control 3 goats and system with intelligently decide moves of tiger. 
+A traditional board game, played in few northern states of India ( including my village :>) ). In this game User manipulates three Goats, while Computer manipulates Tiger using Artificial Intelligence. If no place is left for tiger's movement then User wins, while if tiger kills atleast two goats then tiger wins.
+
